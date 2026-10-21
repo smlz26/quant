@@ -1,0 +1,36 @@
+# 交易成本配置 —— 参数全部由用户真实交割单反推
+# 校准源：中山证券 2026-08 ~ 2026-10 对账单
+# 校验：tests/test_costs.py 全部用例 0 误差通过
+
+account:
+  broker: 中山证券
+  market: A股
+  capital: 500000          # 本金，不追加
+
+fees:
+  commission_rate: 0.00018   # 万1.8（含过户费的综合费率）
+  min_commission: 5.0        # 无免五，每笔最低 5 元
+  stamp_duty_rate: 0.0005    # 印花税 0.05%，仅卖出
+  transfer_fee_rate: 0.0     # 过户费已并入佣金；若券商单列，改为 0.00001
+
+# 由上面推导，非手工填写：
+#   最低 5 元临界金额 = 5 / 0.00018 = 27,777.78 元
+#   低于此金额的成交，实际费率高于名义费率
+
+execution:
+  # 调仓频率决定年换手，直接决定成本
+  rebalance: monthly          # monthly / biweekly / weekly
+  turnover_per_rebalance: 0.5 # 单次目标换手
+  slippage_buy: 0.0008        # 单边滑点 8bp（中盘股）
+  slippage_sell: 0.0008
+
+position:
+  n_positions: 15
+  max_single_weight: 0.08     # 单票上限 8%（15 只等权 6.67%，留余量）
+  max_industry_weight: 0.25   # 单行业上限 25%
+  min_cash: 0.02
+
+# 年化成本参考（本金 50 万、15 只、月频、换手 50%）
+#   每只 33,333 元，高于最低 5 元临界 27,778 → 不触发最低收费
+#   单次换手成本  0.086%
+#   年成本        2,580 元 = 0.52%

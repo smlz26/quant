@@ -1,0 +1,25 @@
+{
+  "as_of": "2026-10-21",
+  "note": "数据来自用户 2026-10-21 持仓截图，成本价由「市值-盈亏」反推",
+  "cash": 21642.52,
+  "cash_note": "可用 641.72 + 逆回购/冻结约 21,000，合计对上券商 App 的总资产 574,726.97",
+  "positions": [
+    {"name": "中国船舶", "code": "600150", "shares": 800, "cost": 24.381},
+    {"name": "恒瑞医药", "code": "600276", "shares": 1200, "cost": 38.93},
+    {"name": "牧原股份", "code": "002714", "shares": 2900, "cost": 39.701},
+    {"name": "中航沈飞", "code": "600760", "shares": 300, "cost": 46.457},
+    {"name": "中际旭创", "code": "300308", "shares": 100, "cost": 662.119},
+    {"name": "指南针", "code": "300803", "shares": 435, "cost": 58.122},
+    {"name": "中国中免", "code": "601888", "shares": 1100, "cost": 56.816},
+    {"name": "易点天下", "code": "301171", "shares": 400, "cost": 36.873},
+    {"name": "长江证券", "code": "000783", "shares": 2200, "cost": 8.909},
+    {"name": "药明康德", "code": "603259", "shares": 200, "cost": 177.703},
+    {"name": "天赐材料", "code": "002709", "shares": 300, "cost": 33.907},
+    {"name": "天岳先进", "code": "688234", "shares": 200, "cost": 119.815},
+    {"name": "胜宏科技", "code": "300476", "shares": 100, "cost": 278.770},
+    {"name": "兆易创新", "code": "603986", "shares": 100, "cost": 439.840},
+    {"name": "华夏证券", "code": null, "shares": 53900, "cost": 1.7408, "value_override": 62416.20},
+    {"name": "金融科技", "code": null, "shares": 3400, "cost": 4.125, "value_override": 3423.80},
+    {"name": "R东方1", "code": null, "shares": 100, "cost": 1.000, "value_override": 23.00}
+  ]
+}

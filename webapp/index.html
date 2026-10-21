@@ -1,0 +1,430 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="量化看板">
+<meta name="theme-color" content="#0b0e14">
+<link rel="manifest" href="manifest.json">
+<title>量化看板</title>
+<style>
+:root{
+  --bg:#0b0e14; --card:#151a24; --card2:#1c2230; --line:#252d3d;
+  --txt:#e6eaf2; --dim:#8b97ab; --dim2:#5d6b82;
+  --up:#ff4d4f; --down:#00b578; --accent:#4b8bff;
+  --warn:#ffb020; --gold:#f5c451;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--txt);
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+  font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+body{padding-bottom:calc(64px + env(safe-area-inset-bottom))}
+.wrap{max-width:520px;margin:0 auto;padding:0 14px}
+
+header{padding:calc(14px + env(safe-area-inset-top)) 0 10px;display:flex;
+  justify-content:space-between;align-items:flex-end}
+header h1{margin:0;font-size:19px;font-weight:600;letter-spacing:.5px}
+header .sub{font-size:11px;color:var(--dim2);margin-top:2px}
+.pill{font-size:11px;padding:3px 9px;border-radius:20px;background:var(--card2);
+  color:var(--dim);border:1px solid var(--line)}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;
+  padding:14px;margin-bottom:12px}
+.card h2{margin:0 0 10px;font-size:13px;font-weight:600;color:var(--dim);
+  letter-spacing:.4px;display:flex;justify-content:space-between;align-items:center}
+.card h2 span{font-weight:400;color:var(--dim2);font-size:11px}
+
+/* 情绪仪表 */
+.gauge{display:flex;align-items:center;gap:16px}
+.gauge svg{flex:0 0 108px}
+.gauge .val{font-size:34px;font-weight:700;line-height:1.1;letter-spacing:-1px}
+.gauge .state{font-size:14px;color:var(--warn);margin-top:2px}
+.gauge .meta{font-size:11px;color:var(--dim2);margin-top:6px}
+
+/* 仓位 */
+.pos-row{display:flex;justify-content:space-between;align-items:baseline;
+  padding:9px 0;border-bottom:1px solid var(--line)}
+.pos-row:last-child{border:0;padding-bottom:0}
+.pos-row .k{font-size:13px;color:var(--dim)}
+.pos-row .v{font-size:16px;font-weight:600;font-variant-numeric:tabular-nums}
+
+/* 网格 */
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.kv{background:var(--card2);border-radius:10px;padding:10px 11px}
+.kv .k{font-size:11px;color:var(--dim2);margin-bottom:3px}
+.kv .v{font-size:17px;font-weight:600;font-variant-numeric:tabular-nums}
+
+.up{color:var(--up)}.down{color:var(--down)}.flat{color:var(--dim)}
+.mono{font-variant-numeric:tabular-nums}
+
+/* 列表 */
+.row{display:flex;justify-content:space-between;align-items:center;
+  padding:10px 0;border-bottom:1px solid var(--line)}
+.row:last-child{border:0;padding-bottom:0}
+.row .l{flex:1;min-width:0}
+.row .nm{font-size:14px;font-weight:500;white-space:nowrap;overflow:hidden;
+  text-overflow:ellipsis}
+.row .cd{font-size:10px;color:var(--dim2);margin-top:1px}
+.row .r{text-align:right;flex:0 0 auto;margin-left:10px}
+.row .amt{font-size:14px;font-weight:600;font-variant-numeric:tabular-nums}
+.row .pct{font-size:11px;font-variant-numeric:tabular-nums}
+
+/* 权重条 */
+.bar{height:3px;background:var(--card2);border-radius:2px;margin-top:5px;overflow:hidden}
+.bar i{display:block;height:100%;border-radius:2px;background:var(--accent)}
+
+/* 漏斗 */
+.funnel{margin:0;padding:0;list-style:none}
+.funnel li{display:flex;align-items:center;gap:9px;margin-bottom:7px;font-size:12px}
+.funnel .lbl{flex:0 0 118px;color:var(--dim)}
+.funnel .track{flex:1;height:16px;background:var(--card2);border-radius:4px;overflow:hidden}
+.funnel .fill{height:100%;background:linear-gradient(90deg,#2f6fe0,#4b8bff);
+  border-radius:4px;min-width:2px}
+.funnel .n{flex:0 0 48px;text-align:right;font-variant-numeric:tabular-nums;color:var(--txt)}
+
+.note{font-size:11px;color:var(--dim2);line-height:1.6;margin-top:10px;
+  padding-top:10px;border-top:1px dashed var(--line)}
+.warnbox{background:rgba(255,176,32,.08);border:1px solid rgba(255,176,32,.28);
+  color:var(--warn);border-radius:10px;padding:10px 12px;font-size:12px;
+  line-height:1.6;margin-bottom:12px}
+
+/* 底部导航 */
+nav{position:fixed;left:0;right:0;bottom:0;z-index:50;display:flex;
+  background:rgba(11,14,20,.94);backdrop-filter:blur(14px);
+  border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom)}
+nav button{flex:1;background:none;border:0;color:var(--dim2);padding:9px 0 8px;
+  font-size:10px;font-family:inherit;display:flex;flex-direction:column;
+  align-items:center;gap:3px;cursor:pointer}
+nav button.on{color:var(--accent)}
+nav .ico{font-size:19px;line-height:1}
+.page{display:none}
+.page.on{display:block;animation:fade .18s ease}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.loading{text-align:center;color:var(--dim2);padding:60px 0;font-size:13px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>量化看板</h1>
+      <div class="sub" id="sub">加载中…</div>
+    </div>
+    <button class="pill" onclick="load(true)">刷新</button>
+  </header>
+
+  <!-- 概览 -->
+  <div id="stale"></div>`n`n  <section class="page on" id="p-home">
+    <div class="card">
+      <h2>市场情绪温度 <span>越热越危险</span></h2>
+      <div class="gauge">
+        <svg viewBox="0 0 120 120" width="108" height="108">
+          <circle cx="60" cy="60" r="50" fill="none" stroke="#1c2230" stroke-width="11"/>
+          <circle id="gArc" cx="60" cy="60" r="50" fill="none" stroke="#f5c451"
+                  stroke-width="11" stroke-linecap="round"
+                  transform="rotate(-90 60 60)"
+                  stroke-dasharray="0 314"/>
+        </svg>
+        <div>
+          <div class="val" id="gVal">–</div>
+          <div class="state" id="gState">–</div>
+          <div class="meta" id="gMeta">–</div>
+        </div>
+      </div>
+      <div id="comps" style="margin-top:14px"></div>
+    </div>
+
+    <div class="card">
+      <h2>仓位建议 <span>情绪 × 趋势 两层叠加</span></h2>
+      <div id="posBox"></div>
+      <div class="note" id="posNote"></div>
+    </div>
+
+    <div class="card">
+      <h2>今日盘面</h2>
+      <div class="grid3" id="mktBox"></div>
+      <div id="idxBox" style="margin-top:12px"></div>
+    </div>
+  </section>
+
+  <!-- 持仓 -->
+  <section class="page" id="p-hold">
+    <div class="card">
+      <h2>账户汇总</h2>
+      <div class="grid" id="holdSum"></div>
+    </div>
+    <div class="card">
+      <h2>持仓明细 <span id="holdCount"></span></h2>
+      <div id="holdList"></div>
+      <div class="note">仅作监控，不产生任何交易指令。成本价由「市值 − 盈亏」反推。</div>
+    </div>
+  </section>
+
+  <!-- 数据 -->
+  <section class="page" id="p-data">
+    <div class="card">
+      <h2>股票池筛选漏斗</h2>
+      <ul class="funnel" id="funnel"></ul>
+      <div class="note">硬过滤之后的池子才进入打分环节。漏斗每一档都能追溯，不黑箱。</div>
+    </div>
+    <div class="card">
+      <h2>低换手样本 <span>非策略信号</span></h2>
+      <div class="warnbox">这是数据管道的产出，用来验证链路是否正常，<b>不是投资建议</b>。策略层还没做。</div>
+      <div id="pool"></div>
+    </div>
+  </section>
+
+  <!-- 回测 -->
+  <section class="page" id="p-bt">
+    <div class="card">
+      <h2>净值曲线 <span>起点 = 100</span></h2>
+      <div id="btChart"></div>
+      <div id="btLegend" style="display:flex;gap:14px;font-size:11px;color:#8b97ab;margin-top:8px;flex-wrap:wrap"></div>
+    </div>
+    <div class="card">
+      <h2>回测指标</h2>
+      <div class="grid" id="btMetrics"></div>
+      <div class="note" id="btVerdict"></div>
+    </div>
+    <div class="card">
+      <h2>因子 IC <span>|IC|<0.02 无效</span></h2>
+      <div id="btIC"></div>
+    </div>
+    <div class="card">
+      <h2>撮合内核自检</h2>
+      <div id="testBox"></div>
+      <div class="note" id="testNote"></div>
+    </div>
+  </section>
+</div>
+
+<nav>
+  <button class="on" data-t="home"><span class="ico">◎</span>概览</button>
+  <button data-t="hold"><span class="ico">▤</span>持仓</button>
+  <button data-t="data"><span class="ico">⌗</span>数据</button>
+  <button data-t="bt"><span class="ico">◷</span>回测</button>
+</nav>
+
+<script>
+const $ = s => document.querySelector(s);
+const fmt = (n,d=2) => Number(n).toLocaleString('zh-CN',{minimumFractionDigits:d,maximumFractionDigits:d});
+const cls = n => n > 0 ? 'up' : n < 0 ? 'down' : 'flat';
+const sgn = n => (n>0?'+':'') + fmt(n);
+
+let DATA = null;
+
+document.querySelectorAll('nav button').forEach(b=>{
+  b.onclick = () => {
+    document.querySelectorAll('nav button').forEach(x=>x.classList.remove('on'));
+    document.querySelectorAll('.page').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on');
+    $('#p-'+b.dataset.t).classList.add('on');
+    window.scrollTo(0,0);
+  };
+});
+
+async function load(force){
+  try{
+    const r = await fetch('data.json?t=' + (force?Date.now():0));
+    DATA = await r.json();
+    render();
+  }catch(e){
+    $('#sub').textContent = '加载失败：' + e.message;
+  }
+}
+
+function render(){
+  const d = DATA;
+  $('#sub').textContent = `${d.date} · 生成于 ${d.generated_at.slice(11)}`;
+
+  renderSentiment(d.sentiment);
+  renderPosition(d.position);
+  renderMarket(d.market, d.indices);
+  renderHoldings(d.holdings);
+  renderFunnel(d.funnel);
+  renderPool(d.pool_sample);
+  const ageDays = Math.floor((Date.now() - new Date(d.date + "T15:00:00+08:00").getTime()) / 86400000);
+  $("#stale").innerHTML = ageDays > 0
+    ? `<div class="warnbox">数据是 ${ageDays} 天前的（${d.date}）。若超过 3 天，说明云端每日任务没跑成功。</div>`
+    : "";
+  renderTests(d.tests);
+  renderBacktest(d.backtest);
+}
+
+function renderSentiment(s){
+  const C = 2*Math.PI*50;
+  $('#gArc').setAttribute('stroke-dasharray', `${C*s.score/100} ${C}`);
+  const col = s.score>=70 ? '#ff4d4f' : s.score<=30 ? '#00b578' : '#f5c451';
+  $('#gArc').setAttribute('stroke', col);
+  $('#gVal').textContent = s.score.toFixed(1);
+  $('#gVal').style.color = col;
+  $('#gState').textContent = s.state;
+  $('#gMeta').textContent = '100 = 极度狂热 · 0 = 极度恐慌';
+
+  $('#comps').innerHTML = s.components.map(c=>{
+    const w = c.score;
+    return `<div style="margin-bottom:9px">
+      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px">
+        <span>${c.name} <span style="color:#5d6b82">${c.has_history?'':'*'}</span></span>
+        <span class="mono" style="color:#8b97ab">${c.raw} · ${c.score}分 · ${(c.weight*100).toFixed(0)}%</span>
+      </div>
+      <div class="bar"><i style="width:${w}%;background:${w>66?'#ff4d4f':w<33?'#00b578':'#f5c451'}"></i></div>
+    </div>`;
+  }).join('') + `<div style="font-size:11px;color:#5d6b82;margin-top:4px">* 暂无历史分位，用绝对阈值，精度有限</div>`;
+}
+
+function renderPosition(p){
+  const gap = p.current - p.final;
+  $('#posBox').innerHTML = `
+    <div class="pos-row"><span class="k">情绪给的仓位上限</span><span class="v">${p.cap}%</span></div>
+    <div class="pos-row"><span class="k">趋势系数 · ${p.band}</span><span class="v">× ${p.trend_factor}</span></div>
+    <div class="pos-row"><span class="k">模型建议仓位</span><span class="v" style="color:#4b8bff">${p.final}%</span></div>
+    <div class="pos-row"><span class="k">你当前仓位</span><span class="v ${gap>10?'up':''}">${p.current.toFixed(1)}%</span></div>`;
+  $('#posNote').innerHTML = gap > 10
+    ? `模型建议比你当前仓位低 <b>${gap.toFixed(0)}</b> 个百分点。这只是模型的看法，<b>不构成操作建议</b>。`
+    : `你的仓位在模型建议范围内。`;
+}
+
+function renderMarket(m, idx){
+  $('#mktBox').innerHTML = `
+    <div class="kv"><div class="k">上涨 / 下跌</div><div class="v"><span class="up">${m.up}</span> <span style="color:#5d6b82;font-size:13px">/</span> <span class="down">${m.down}</span></div></div>
+    <div class="kv"><div class="k">涨停 / 跌停</div><div class="v"><span class="up">${m.limit_up}</span> <span style="color:#5d6b82;font-size:13px">/</span> <span class="down">${m.limit_down}</span></div></div>
+    <div class="kv"><div class="k">两市成交额</div><div class="v">${(m.amount_yi/10000).toFixed(2)}<span style="font-size:12px;color:#8b97ab"> 万亿</span></div></div>
+    <div class="kv"><div class="k">涨跌中位数</div><div class="v ${cls(m.pct_median)}">${sgn(m.pct_median)}%</div></div>
+    <div class="kv"><div class="k">换手中位数</div><div class="v">${m.turnover_median}%</div></div>
+    <div class="kv"><div class="k">交易个股</div><div class="v">${m.total}</div></div>`;
+
+  $('#idxBox').innerHTML = idx.map(i=>`
+    <div class="row">
+      <div class="l"><div class="nm">${i.name}</div>
+        <div class="cd">200日线偏离 <span class="${cls(i.dev)}">${sgn(i.dev)}%</span></div></div>
+      <div class="r"><div class="amt mono">${fmt(i.close)}</div>
+        <div class="pct ${cls(i.pct)}">${sgn(i.pct)}%</div></div>
+    </div>`).join('');
+}
+
+function renderHoldings(h){
+  const s = h.summary;
+  $('#holdSum').innerHTML = `
+    <div class="kv"><div class="k">总资产</div><div class="v">${fmt(s.equity,0)}</div></div>
+    <div class="kv"><div class="k">持仓市值</div><div class="v">${fmt(s.total_value,0)}</div></div>
+    <div class="kv"><div class="k">持仓盈亏</div><div class="v ${cls(s.total_pnl)}">${sgn(s.total_pnl,0)}</div></div>
+    <div class="kv"><div class="k">盈亏比例</div><div class="v ${cls(s.total_pnl_pct)}">${sgn(s.total_pnl_pct)}%</div></div>`;
+
+  $('#holdCount').textContent = `${h.positions.length} 只`;
+  $('#holdList').innerHTML = h.positions.map(p=>`
+    <div class="row">
+      <div class="l">
+        <div class="nm">${p.name}${p.matched?'':' <span style="color:#5d6b82;font-size:10px">未匹配行情</span>'}</div>
+        <div class="cd">${p.shares} 股 · 成本 ${p.cost} · 占比 ${p.weight}%</div>
+        <div class="bar"><i style="width:${Math.min(p.weight*3,100)}%"></i></div>
+      </div>
+      <div class="r">
+        <div class="amt mono">${fmt(p.value,0)}</div>
+        <div class="pct ${cls(p.pnl)}">${sgn(p.pnl_pct)}%</div>
+      </div>
+    </div>`).join('');
+}
+
+function renderFunnel(f){
+  const max = f[0].count;
+  $('#funnel').innerHTML = f.map(x=>`
+    <li><span class="lbl">${x.step}</span>
+      <span class="track"><span class="fill" style="width:${x.count/max*100}%"></span></span>
+      <span class="n">${x.count}</span></li>`).join('');
+}
+
+function renderPool(p){
+  $('#pool').innerHTML = p.map(x=>`
+    <div class="row">
+      <div class="l"><div class="nm">${x.name}</div>
+        <div class="cd">${x.code} · 换手 ${x.turnover}% · 成交 ${x.amount_yi} 亿</div></div>
+      <div class="r"><div class="amt mono">${fmt(x.price)}</div>
+        <div class="pct ${cls(x.pct)}">${sgn(x.pct)}%</div></div>
+    </div>`).join('');
+}
+
+function renderTests(t){
+  $('#testBox').innerHTML = `
+    <div style="display:flex;align-items:center;gap:14px;margin-bottom:12px">
+      <div style="font-size:40px;font-weight:700;color:#00b578">${t.passed}</div>
+      <div><div style="font-size:13px">条规则测试全部通过</div>
+      <div style="font-size:11px;color:#5d6b82">${t.files.join(' · ')}</div></div>
+    </div>
+    <div class="grid">
+      ${[['T+1 冻结','当日买入不可卖'],['涨跌停','涨停买不到'],['停牌','不可交易'],
+         ['整手','100股取整'],['零股','仅可全清'],['红利税','20/10/0%'],
+         ['送转','股数×成本不变'],['费用','对齐交割单']]
+        .map(([a,b])=>`<div class="kv"><div class="k">${b}</div><div class="v" style="font-size:13px">${a}</div></div>`).join('')}
+    </div>`;
+  $('#testNote').textContent = '这些规则错了，任何回测曲线都是假的。所以先测引擎，再谈策略。';
+}
+
+function renderBacktest(b){
+  if(!b){ $('#btChart').innerHTML = '<div class="loading">还没有回测结果</div>'; return; }
+
+  const norm = a => a.map(([d,v]) => [d, v / a[0][1] * 100]);
+  const eq = norm(b.equity), ew = norm(b.equal_weight), bm = norm(b.bench);
+
+  const W = 480, H = 170, P = 6, n = eq.length;
+  const all = [...eq, ...ew, ...bm].map(p => p[1]);
+  const lo = Math.min(...all, 100), hi = Math.max(...all, 100);
+  const x = i => P + i / (n - 1) * (W - 2 * P);
+  const y = v => H - P - (v - lo) / (hi - lo) * (H - 2 * P);
+  const path = a => a.map((p, i) => `${i ? 'L' : 'M'}${x(i).toFixed(1)},${y(p[1]).toFixed(1)}`).join('');
+
+  const fmtPct = v => (v * 100).toFixed(1) + '%';
+  $('#btChart').innerHTML = `
+    <svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;display:block">
+      <line x1="${P}" y1="${y(100)}" x2="${W-P}" y2="${y(100)}"
+            stroke="#252d3d" stroke-width="1" stroke-dasharray="4 4"/>
+      <path d="${path(ew)}" fill="none" stroke="#5d6b82" stroke-width="1.6"/>
+      <path d="${path(bm)}" fill="none" stroke="#00b578" stroke-width="1.6"/>
+      <path d="${path(eq)}" fill="none" stroke="#4b8bff" stroke-width="2.2"/>
+    </svg>`;
+  $('#btLegend').innerHTML = `
+    <span><i style="display:inline-block;width:10px;height:3px;background:#4b8bff;vertical-align:middle"></i>
+      策略 ${fmtPct(b.metrics.total_return)}</span>
+    <span><i style="display:inline-block;width:10px;height:3px;background:#5d6b82;vertical-align:middle"></i>
+      等权全持有 ${fmtPct(b.metrics.equal_weight_annual)}/年</span>
+    <span><i style="display:inline-block;width:10px;height:3px;background:#00b578;vertical-align:middle"></i>
+      沪深300 ${fmtPct(b.metrics.bench_annual)}/年</span>`;
+
+  const m = b.metrics;
+  $('#btMetrics').innerHTML = `
+    <div class="kv"><div class="k">年化收益</div><div class="v ${cls(m.annual_return)}">${sgn(m.annual_return*100)}%</div></div>
+    <div class="kv"><div class="k">最大回撤</div><div class="v down">${(m.max_drawdown*100).toFixed(1)}%</div></div>
+    <div class="kv"><div class="k">夏普</div><div class="v">${m.sharpe.toFixed(2)}</div></div>
+    <div class="kv"><div class="k">年化超额</div><div class="v ${cls(m.excess_annual)}">${sgn(m.excess_annual*100)}%</div></div>
+    <div class="kv"><div class="k">月胜率</div><div class="v">${(m.monthly_win_rate*100).toFixed(0)}%</div></div>
+    <div class="kv"><div class="k">平均换手</div><div class="v">${(m.avg_turnover*100).toFixed(0)}%</div></div>`;
+
+  $('#btVerdict').innerHTML =
+    `<b style="color:#ffb020">结论：这版因子还不能用。</b>
+     策略年化 ${fmtPct(m.annual_return)}，跑赢沪深300（${fmtPct(m.bench_annual)}），
+     但被「等权买入全部样本股」的 ${fmtPct(m.equal_weight_annual)} 大幅打败。
+     说明量价因子在这批大中盘股票上几乎没有区分能力，15 只集中持仓只是在赌噪声。
+     真正的 alpha 要靠财务数据（价值/质量/成长），那部分还没接上。`;
+
+  const names = Object.keys(b.ic || {});
+  $('#btIC').innerHTML = names.map(k => {
+    const [ic, icir, t] = b.ic[k];
+    const good = Math.abs(ic) > 0.02 && t > 2;
+    return `<div class="row">
+      <div class="l"><div class="nm">${k}</div>
+        <div class="cd">ICIR ${icir.toFixed(2)} · t ${t.toFixed(2)}</div></div>
+      <div class="r"><div class="amt" style="color:${good?'#00b578':'#8b97ab'}">${ic.toFixed(4)}</div>
+        <div class="pct">${good?'有效':'无效'}</div></div>
+    </div>`;
+  }).join('');
+}
+
+load(false);
+</script>
+</body>
+</html>
+
+
