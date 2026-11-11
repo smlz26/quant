@@ -1,209 +1,209 @@
 {
- "generated_at": "2026-11-10 08:53:59",
- "date": "2026-11-10",
+ "generated_at": "2026-11-11 08:53:10",
+ "date": "2026-11-11",
  "sentiment": {
-  "score": 55.6,
-  "state": "温和偏暖",
+  "score": 53.6,
+  "state": "中性",
   "components": [
    {
     "name": "两市成交量分位",
-    "raw": "93165 万手",
-    "score": 35,
+    "raw": "100242 万手",
+    "score": 43,
     "weight": 0.3,
     "has_history": true
    },
    {
     "name": "涨停/跌停比",
-    "raw": "涨停 104 / 跌停 1",
-    "score": 99,
+    "raw": "涨停 88 / 跌停 9",
+    "score": 91,
     "weight": 0.25,
     "has_history": false
    },
    {
     "name": "上涨家数占比",
-    "raw": "4272 涨 / 1149 跌（76.7%）",
-    "score": 77,
+    "raw": "3232 涨 / 1581 跌（64.6%）",
+    "score": 65,
     "weight": 0.2,
     "has_history": false
    },
    {
     "name": "沪深300 偏离 200 日线",
-    "raw": "-12.34%",
+    "raw": "-11.91%",
     "score": 0,
     "weight": 0.15,
     "has_history": true
    },
    {
     "name": "换手率 >5% 个股占比",
-    "raw": "14.6%",
-    "score": 49,
+    "raw": "15.5%",
+    "score": 52,
     "weight": 0.1,
     "has_history": false
    }
   ]
  },
  "position": {
-  "cap": 70,
+  "cap": 80,
   "trend_factor": 0.6,
   "band": "MA200 下方 8~15%",
-  "final": 42,
+  "final": 48,
   "current": 96.2
  },
  "market": {
-  "total": 5572,
-  "up": 4272,
-  "down": 1149,
-  "flat": 151,
-  "limit_up": 104,
-  "limit_down": 1,
-  "amount_yi": 15166.0,
-  "turnover_median": 1.64,
-  "pct_median": 1.31
+  "total": 5003,
+  "up": 3232,
+  "down": 1581,
+  "flat": 190,
+  "limit_up": 88,
+  "limit_down": 9,
+  "amount_yi": 15981.0,
+  "turnover_median": 1.67,
+  "pct_median": 0.68
  },
  "indices": [
   {
    "name": "沪深300",
-   "close": 4059.11,
-   "pct": 0.07,
-   "dev": -12.34
+   "close": 4075.71,
+   "pct": 0.41,
+   "dev": -11.91
   },
   {
    "name": "上证指数",
-   "close": 3663.72,
-   "pct": 0.08,
-   "dev": -7.95
+   "close": 3680.64,
+   "pct": 0.46,
+   "dev": -7.46
   },
   {
    "name": "中证500",
-   "close": 6645.89,
-   "pct": 0.91,
-   "dev": -16.69
+   "close": 6713.18,
+   "pct": 1.01,
+   "dev": -15.76
   },
   {
    "name": "中证1000",
-   "close": 6579.36,
-   "pct": 1.22,
-   "dev": -16.58
+   "close": 6669.55,
+   "pct": 1.37,
+   "dev": -15.35
   }
  ],
  "funnel": [
   {
    "step": "全 A 股票",
-   "count": 5579
+   "count": 5350
   },
   {
    "step": "剔除停牌/无成交",
-   "count": 5572
+   "count": 5003
   },
   {
    "step": "剔除 ST",
-   "count": 5379
+   "count": 4813
   },
   {
    "step": "仅沪深（剔北交所）",
-   "count": 5027
+   "count": 4813
   },
   {
    "step": "日成交额 ≥ 5000 万",
-   "count": 3585
+   "count": 3484
   }
  ],
  "pool_sample": [
   {
    "code": "601628",
    "name": "中国人寿",
-   "price": 34.95,
-   "pct": -0.68,
+   "price": 34.82,
+   "pct": -0.37,
    "turnover": 0.06,
-   "amount_yi": 4.25
-  },
-  {
-   "code": "601288",
-   "name": "农业银行",
-   "price": 7.35,
-   "pct": -0.54,
-   "turnover": 0.06,
-   "amount_yi": 14.17
-  },
-  {
-   "code": "601988",
-   "name": "中国银行",
-   "price": 6.96,
-   "pct": -0.57,
-   "turnover": 0.08,
-   "amount_yi": 11.18
-  },
-  {
-   "code": "600236",
-   "name": "桂冠电力",
-   "price": 8.9,
-   "pct": -1.44,
-   "turnover": 0.08,
-   "amount_yi": 0.55
-  },
-  {
-   "code": "601398",
-   "name": "工商银行",
-   "price": 8.6,
-   "pct": -0.12,
-   "turnover": 0.08,
-   "amount_yi": 18.46
-  },
-  {
-   "code": "601728",
-   "name": "中国电信",
-   "price": 6.76,
-   "pct": -0.44,
-   "turnover": 0.1,
-   "amount_yi": 5.09
+   "amount_yi": 4.16
   },
   {
    "code": "601998",
    "name": "中信银行",
-   "price": 9.2,
-   "pct": 1.1,
-   "turnover": 0.11,
-   "amount_yi": 4.25
+   "price": 9.1,
+   "pct": -1.09,
+   "turnover": 0.08,
+   "amount_yi": 3.02
   },
   {
-   "code": "002736",
-   "name": "国信证券",
-   "price": 9.0,
-   "pct": 0.11,
-   "turnover": 0.12,
-   "amount_yi": 1.08
+   "code": "601288",
+   "name": "农业银行",
+   "price": 7.26,
+   "pct": -1.22,
+   "turnover": 0.09,
+   "amount_yi": 20.31
+  },
+  {
+   "code": "601988",
+   "name": "中国银行",
+   "price": 6.94,
+   "pct": -0.29,
+   "turnover": 0.09,
+   "amount_yi": 13.17
+  },
+  {
+   "code": "601857",
+   "name": "中国石油",
+   "price": 11.92,
+   "pct": 0.85,
+   "turnover": 0.09,
+   "amount_yi": 17.81
+  },
+  {
+   "code": "601398",
+   "name": "工商银行",
+   "price": 8.53,
+   "pct": -0.81,
+   "turnover": 0.11,
+   "amount_yi": 24.38
+  },
+  {
+   "code": "601728",
+   "name": "中国电信",
+   "price": 6.62,
+   "pct": -2.07,
+   "turnover": 0.11,
+   "amount_yi": 5.96
   },
   {
    "code": "601319",
    "name": "中国人保",
-   "price": 7.25,
-   "pct": -0.96,
+   "price": 7.19,
+   "pct": -0.83,
    "turnover": 0.12,
-   "amount_yi": 3.04
+   "amount_yi": 3.11
   },
   {
-   "code": "001872",
-   "name": "招商港口",
-   "price": 25.07,
-   "pct": -2.3,
-   "turnover": 0.12,
-   "amount_yi": 0.71
+   "code": "600039",
+   "name": "四川路桥",
+   "price": 8.72,
+   "pct": -1.25,
+   "turnover": 0.13,
+   "amount_yi": 0.97
   },
   {
    "code": "600025",
    "name": "华能水电",
-   "price": 10.92,
-   "pct": -0.64,
-   "turnover": 0.12,
-   "amount_yi": 2.5
+   "price": 10.82,
+   "pct": -0.92,
+   "turnover": 0.13,
+   "amount_yi": 2.63
   },
   {
-   "code": "601066",
-   "name": "中信建投",
-   "price": 22.13,
-   "pct": -0.41,
-   "turnover": 0.12,
-   "amount_yi": 1.8
+   "code": "001872",
+   "name": "招商港口",
+   "price": 25.08,
+   "pct": 0.04,
+   "turnover": 0.13,
+   "amount_yi": 0.75
+  },
+  {
+   "code": "601298",
+   "name": "青岛港",
+   "price": 9.74,
+   "pct": -0.51,
+   "turnover": 0.14,
+   "amount_yi": 0.76
   }
  ],
  "holdings": {
@@ -212,13 +212,13 @@
     "name": "牧原股份",
     "code": "002714",
     "shares": 2900,
-    "price": 44.57,
+    "price": 44.11,
     "cost": 39.701,
-    "value": 129253.0,
-    "pnl": 14120.1,
-    "pnl_pct": 12.26,
+    "value": 127919.0,
+    "pnl": 12786.1,
+    "pnl_pct": 11.11,
     "matched": true,
-    "weight": 23.89
+    "weight": 23.33
    },
    {
     "name": "华夏证券",
@@ -230,103 +230,103 @@
     "pnl": -31412.92,
     "pnl_pct": -33.48,
     "matched": false,
-    "weight": 11.54
-   },
-   {
-    "name": "中国中免",
-    "code": "601888",
-    "shares": 1100,
-    "price": 53.21,
-    "cost": 56.816,
-    "value": 58531.0,
-    "pnl": -3966.6,
-    "pnl_pct": -6.35,
-    "matched": true,
-    "weight": 10.82
+    "weight": 11.38
    },
    {
     "name": "恒瑞医药",
     "code": "600276",
     "shares": 1200,
-    "price": 48.55,
+    "price": 48.22,
     "cost": 38.93,
-    "value": 58260.0,
-    "pnl": 11544.0,
-    "pnl_pct": 24.71,
+    "value": 57864.0,
+    "pnl": 11148.0,
+    "pnl_pct": 23.86,
     "matched": true,
-    "weight": 10.77
+    "weight": 10.55
+   },
+   {
+    "name": "中国中免",
+    "code": "601888",
+    "shares": 1100,
+    "price": 52.1,
+    "cost": 56.816,
+    "value": 57310.0,
+    "pnl": -5187.6,
+    "pnl_pct": -8.3,
+    "matched": true,
+    "weight": 10.45
    },
    {
     "name": "中际旭创",
     "code": "300308",
     "shares": 100,
-    "price": 471.0,
+    "price": 542.0,
     "cost": 662.119,
-    "value": 47100.0,
-    "pnl": -19111.9,
-    "pnl_pct": -28.86,
+    "value": 54200.0,
+    "pnl": -12011.9,
+    "pnl_pct": -18.14,
     "matched": true,
-    "weight": 8.71
+    "weight": 9.88
    },
    {
     "name": "药明康德",
     "code": "603259",
     "shares": 200,
-    "price": 150.3,
+    "price": 148.7,
     "cost": 177.703,
-    "value": 30060.0,
-    "pnl": -5480.6,
-    "pnl_pct": -15.42,
+    "value": 29740.0,
+    "pnl": -5800.6,
+    "pnl_pct": -16.32,
     "matched": true,
-    "weight": 5.56
+    "weight": 5.42
    },
    {
     "name": "中国船舶",
     "code": "600150",
     "shares": 800,
-    "price": 34.26,
+    "price": 34.06,
     "cost": 24.381,
-    "value": 27408.0,
-    "pnl": 7903.2,
-    "pnl_pct": 40.52,
+    "value": 27248.0,
+    "pnl": 7743.2,
+    "pnl_pct": 39.7,
     "matched": true,
-    "weight": 5.07
+    "weight": 4.97
    },
    {
     "name": "兆易创新",
     "code": "603986",
     "shares": 100,
-    "price": 244.57,
+    "price": 259.62,
     "cost": 439.84,
-    "value": 24457.0,
-    "pnl": -19527.0,
-    "pnl_pct": -44.4,
+    "value": 25962.0,
+    "pnl": -18022.0,
+    "pnl_pct": -40.97,
     "matched": true,
-    "weight": 4.52
+    "weight": 4.73
    },
    {
     "name": "指南针",
     "code": "300803",
     "shares": 435,
-    "price": 44.17,
+    "price": 44.53,
     "cost": 58.122,
-    "value": 19213.95,
-    "pnl": -6069.12,
-    "pnl_pct": -24.0,
+    "value": 19370.55,
+    "pnl": -5912.52,
+    "pnl_pct": -23.39,
     "matched": true,
-    "weight": 3.55
+    "weight": 3.53
    },
    {
     "name": "天岳先进",
     "code": "688234",
     "shares": 200,
-    "price": 79.95,
+    "price": 83.93,
     "cost": 119.815,
-    "value": 15990.0,
-    "pnl": -7973.0,
-    "pnl_pct": -33.27,
+    "value": 16786.0,
+    "pnl": -7177.0,
+    "pnl_pct": -29.95,
     "matched": true,
-    "weight": 2.96
+    "weight": 3.06
    },
    {
     "name": "长江证券",
@@ -338,55 +338,55 @@
     "pnl": -4287.8,
     "pnl_pct": -21.88,
     "matched": true,
-    "weight": 2.83
-   },
-   {
-    "name": "中航沈飞",
-    "code": "600760",
-    "shares": 300,
-    "price": 46.9,
-    "cost": 46.457,
-    "value": 14070.0,
-    "pnl": 132.9,
-    "pnl_pct": 0.95,
-    "matched": true,
-    "weight": 2.6
-   },
-   {
-    "name": "易点天下",
-    "code": "301171",
-    "shares": 400,
-    "price": 34.63,
-    "cost": 36.873,
-    "value": 13852.0,
-    "pnl": -897.2,
-    "pnl_pct": -6.08,
-    "matched": true,
-    "weight": 2.56
+    "weight": 2.79
    },
    {
     "name": "胜宏科技",
     "code": "300476",
     "shares": 100,
-    "price": 132.8,
+    "price": 145.97,
     "cost": 278.77,
-    "value": 13280.0,
-    "pnl": -14597.0,
-    "pnl_pct": -52.36,
+    "value": 14597.0,
+    "pnl": -13280.0,
+    "pnl_pct": -47.64,
     "matched": true,
-    "weight": 2.45
+    "weight": 2.66
+   },
+   {
+    "name": "中航沈飞",
+    "code": "600760",
+    "shares": 300,
+    "price": 46.62,
+    "cost": 46.457,
+    "value": 13986.0,
+    "pnl": 48.9,
+    "pnl_pct": 0.35,
+    "matched": true,
+    "weight": 2.55
+   },
+   {
+    "name": "易点天下",
+    "code": "301171",
+    "shares": 400,
+    "price": 34.68,
+    "cost": 36.873,
+    "value": 13872.0,
+    "pnl": -877.2,
+    "pnl_pct": -5.95,
+    "matched": true,
+    "weight": 2.53
    },
    {
     "name": "天赐材料",
     "code": "002709",
     "shares": 300,
-    "price": 27.94,
+    "price": 27.84,
     "cost": 33.907,
-    "value": 8382.0,
-    "pnl": -1790.1,
-    "pnl_pct": -17.6,
+    "value": 8352.0,
+    "pnl": -1820.1,
+    "pnl_pct": -17.89,
     "matched": true,
-    "weight": 1.55
+    "weight": 1.52
    },
    {
     "name": "金融科技",
@@ -398,7 +398,7 @@
     "pnl": -10601.2,
     "pnl_pct": -75.59,
     "matched": false,
-    "weight": 0.63
+    "weight": 0.62
    },
    {
     "name": "R东方1",
@@ -414,12 +414,12 @@
    }
   ],
   "summary": {
-   "total_value": 541031.95,
+   "total_value": 548381.55,
    "total_cost": 633123.19,
-   "total_pnl": -92091.24,
-   "total_pnl_pct": -14.55,
+   "total_pnl": -84741.64,
+   "total_pnl_pct": -13.38,
    "cash": 21642.52,
-   "equity": 562674.47,
+   "equity": 570024.07,
    "position_ratio": 96.2
   }
  },
